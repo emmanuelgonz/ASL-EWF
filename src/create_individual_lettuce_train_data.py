@@ -21,11 +21,11 @@ def get_percentile_intensity_in_mask_img(img, mask, percentile, max_intensity=22
 
 def get_channel_with_greatest_intensity(img):
     # flatten each channel to a single dimension and get the maximum value in each
-    c0 = max(img[:, :, :0].flatten())
+    c0 = max(img[:, :, 0].flatten())
     #c0 = max(img[0, 0, 0].flatten())
-    c1 = max(img[:, :, :1].flatten())
+    c1 = max(img[:, :, 1].flatten())
     #c1 = max(img[0, 0, 1].flatten())
-    c2 = max(img[:, :, :2].flatten())
+    c2 = max(img[:, :,2].flatten())
     #c2 = max(img[0, 0, 2].flatten())
     # if the first channel has the greatest pixel value then return channel 0
     if c0 > c1 and c0 > c2:
