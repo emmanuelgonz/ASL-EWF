@@ -6,4 +6,3 @@ pip3 install scikit-image
 pip3 install scikit-learn
 pip3 install keras
 pip3 install fire
-mkdir /home/emmanuelgonzalez/ASL-EWF/src/greyscale_images
