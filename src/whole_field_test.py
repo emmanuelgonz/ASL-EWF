@@ -8,7 +8,6 @@ from skimage.color import grey2rgb
 import matplotlib.pyplot as plt
 import os
 
-
 def extract_region(field, model, x, y, l, box_length, stride, threshold=0.97, prune=False):
     im = rgb2grey(field[x:x + l, y:y + l])  # transform from color to grey
     im = resize(im, (im.shape[0] * 3, im.shape[1] * 3))  ##scale it up, hideous i know, but you can't train on this 8x8 pixels. plus the ground_truth was scaled....
@@ -46,18 +45,18 @@ def evaluate_whole_field(output_dir, field, model, l=250, stride=5, prune=True):
 
     ##load the main three variables.
     start = np.array([0,0])
-    if os.path.exists(output_dir+"loop_vars.npy"):
-        start = np.load(output_dir+"loop_vars.npy")
+    if os.path.exists(output_dir+"/loop_vars.npy"):
+        start = np.load(output_dir+"/loop_vars.npy")
 
     boxes = None
-    if os.path.exists(output_dir+"boxes.npy"):
-       boxes = np.load(output_dir+"boxes.npy")
+    if os.path.exists(output_dir+"/boxes.npy"):
+       boxes = np.load(output_dir+"/boxes.npy")
     else:
         boxes = np.zeros((1, 4))
 
     probs = None
-    if os.path.exists(output_dir+"probs.npy"):
-        probs = np.load(output_dir+"probs.npy")
+    if os.path.exists(output_dir+"/probs.npy"):
+        probs = np.load(output_dir+"/probs.npy")
     else:
         probs = np.zeros((1))
 
@@ -70,7 +69,7 @@ def evaluate_whole_field(output_dir, field, model, l=250, stride=5, prune=True):
             if np.max(field[x:x+l,y:y+l]) == 0:
                 continue
 
-            np.save(output_dir+"loop_vars.npy", np.array([x, y]))
+            np.save(output_dir+"/loop_vars.npy", np.array([x, y]))
 
             box, prob = extract_region(field, model, x, y, l, box_length, stride, threshold=0.90, prune=prune)
 
@@ -79,22 +78,22 @@ def evaluate_whole_field(output_dir, field, model, l=250, stride=5, prune=True):
                 probs = np.hstack((probs,prob))
 
             #save the values for loading.
-            np.save(output_dir+"boxes.npy", boxes)
-            np.save(output_dir+"probs.npy", probs)
+            np.save(output_dir+"/boxes.npy", boxes)
+            np.save(output_dir+"/probs.npy", probs)
 
         start = np.array([x, 0])
-        np.save(output_dir+"loop_vars.npy", start)
+        np.save(output_dir+"/loop_vars.npy", start)
 
     #set the loop vars to done.
-    np.save(output_dir + "loop_vars.npy", np.array([h, w]))
+    np.save(output_dir + "/loop_vars.npy", np.array([h, w]))
 
     ##prune the overlapping boxes.
     if not prune:
         boxes, probs = non_max_suppression_fast(boxes, probs, 0.18)
-        np.save(output_dir + "pruned_boxes.npy", boxes)
-        np.save(output_dir + "pruned_probs.npy", probs)
+        np.save(output_dir + "/pruned_boxes.npy", boxes)
+        np.save(output_dir + "/pruned_probs.npy", probs)
         print(boxes.shape)
-    imsave(name+"_lettuce_count_" + str(boxes.shape[0]) + ".png", draw_boxes(grey2rgb(field), boxes, color=(255,0,0)))
+    imsave(output_dir+"_lettuce_count_" + str(boxes.shape[0]) + ".png", draw_boxes(grey2rgb(field), boxes, color=(255,0,0)))
 
 def prune_boxes(name,overlap_coefficient=0.18):
     boxes = np.load("boxes.npy")

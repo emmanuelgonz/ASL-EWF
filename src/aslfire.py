@@ -1,7 +1,7 @@
 import fire
 import keras 
 from skimage.io import imread, imsave
-from skimage.color import grey2rgb,rgb2grey
+from skimage.color import rgb2grey
 from skimage.transform import resize, rescale, pyramid_expand
 from ModifyImageColors import fix_noise
 from keras.models import load_model
@@ -15,6 +15,8 @@ from size_calculator import calculate_sizes, create_for_contours
 import matplotlib.pyplot as plt
 from threading import Thread
 import cv2
+from test_model import sliding_window_count_simple, non_max_suppression_fast, draw_boxes, sliding_window_count_vectorised
+from skimage.color import grey2rgb
 
 def fix_noise(img):
     ndvi_channel = get_channel_with_greatest_intensity(img)
@@ -48,7 +50,6 @@ def fix_noise(img):
 
 
 def fix_noise_vetcorised(img):
-    
     #ndvi_channel = get_channel_with_greatest_intensity(img)
     ndvi_channel = Image.open(img)
     # create single channel image (gray) from NDVI channel

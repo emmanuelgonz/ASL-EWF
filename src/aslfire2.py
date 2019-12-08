@@ -12,7 +12,7 @@ from contours_test import create_quadrant_image
 from size_calculator import calculate_sizes, create_for_contours
 import matplotlib.pyplot as plt
 
-def whole_pipe(dir1, name):
+def whole_pipe(output_dir, name, model):
     #img_dir = /home/emmanuelgonzalez/AirSurf-Lettuce/testing_images/medium_grey_conv.png
     #dir1 = 'Z:/1 - Projects/AirSurf/Gs_Growers/'
     #dir1 = '/home/emmanuelgonzalez/AirSurf-Lettuce/testing_images/'
@@ -22,9 +22,9 @@ def whole_pipe(dir1, name):
     #name = 'bottom_field_cropped'
     #name = 'top_field_cropped'
     Image.MAX_IMAGE_PIXELS = None
-    output_name = 'data/'+ name +'.png'
+    output_name = 'greyscale_images/'+ name +'.png'
     if not os.path.exists(output_name):
-        img = imread(dir1 + name + '.png')
+        img = imread(output_dir + name + '.png')
         #img1 = fix_noise_vetcorised(img)
         img1 = img
         imsave(output_name, img1)
@@ -34,7 +34,7 @@ def whole_pipe(dir1, name):
     plt.imshow(img1)
     plt.show()
 
-    loaded_model = load_model('../model/trained_model_new2.h5')
+    loaded_model = load_model(model)
 
     #create dir.
     if not os.path.exists(name):

@@ -100,6 +100,7 @@ def fix_noise_vetcorised(img):
     filtered_contours = [contours[idx[0]] for idx in np.argwhere(contour_areas < 180)] #not ideal. but converting to a numpy array breaks cv2
     contour_rects = np.array([cv2.minAreaRect(contour)[1] for contour in filtered_contours], dtype=np.float32)
     aspect_diff = np.abs(np.ones(contour_rects[:,0].shape) - contour_rects[:,0] / contour_rects[:,1])
+    print(aspect_diff)
     filtered_contours = [filtered_contours[idx[0]] for idx in np.argwhere(aspect_diff <= 0.5)] #not ideal. but converting to a numpy array breaks cv2
     clahe = cv2.createCLAHE(clipLimit=5, tileGridSize=(5, 5))
 
