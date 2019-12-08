@@ -93,7 +93,7 @@ def evaluate_whole_field(output_dir, field, model, l=250, stride=5, prune=True):
         np.save(output_dir + "/pruned_boxes.npy", boxes)
         np.save(output_dir + "/pruned_probs.npy", probs)
         print(boxes.shape)
-    imsave(output_dir+"_lettuce_count_" + str(boxes.shape[0]) + ".png", draw_boxes(grey2rgb(field), boxes, color=(255,0,0)))
+    #imsave(output_dir+"_lettuce_count_" + str(boxes.shape[0]) + ".png", draw_boxes(grey2rgb(field), boxes, color=(255,0,0)))
 
 def prune_boxes(name,overlap_coefficient=0.18):
     boxes = np.load("boxes.npy")

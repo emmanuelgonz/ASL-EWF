@@ -71,7 +71,8 @@ def whole_pipe(output_dir, name, model):
 
     #create the output file.
 
-
+    #create_quadrant_file(output_dir, name, 0, 0, boxes, labels, 0, 52.437348, 31.5, 230)
+    
     #create quadrant harvest region image.
     create_quadrant_image(name, color_field)
 
