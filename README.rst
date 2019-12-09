@@ -6,7 +6,7 @@ ASL-EWF provides a command line interface (CLI) for the AirSurf-Lettuce applicat
 
 Using ASL-EWF
 -------------
-To use the CLI, download the repo and run the aslfire.py application as follows
+To use the CLI, download the repo and run the whole_pipe function found in the aslfire2.py file as follows:
 
 .. code::
 
