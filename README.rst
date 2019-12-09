@@ -7,6 +7,7 @@ ASL-EWF provides a command line interface (CLI) for the AirSurf-Lettuce applicat
 Using ASL-EWF
 -------------
 To use the CLI, download the repo and run the aslfire.py application as follows
-A code block::
-   python3 aslfire.py <img>
+
+.. code:
+   python3 aslfire2.py whole_pipe <output_dir> <image_filename> <trainedmodel_dir>
    
