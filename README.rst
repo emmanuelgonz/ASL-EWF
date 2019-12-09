@@ -9,6 +9,7 @@ Using ASL-EWF
 To use the CLI, download the repo and run the aslfire.py application as follows
 
 .. code::
-
+   :maxdepth: 2
+   
    python3 aslfire2.py whole_pipe <output_dir> <image_filename> <trainedmodel_dir>
    
