@@ -6,4 +6,5 @@ pip3 install scikit-image
 pip3 install scikit-learn
 pip3 install keras
 pip3 install fire
+pip3 install geopy
 git clone https://github.com/emmanuelgonz/ASL-EWF.git
