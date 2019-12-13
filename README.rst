@@ -1,10 +1,9 @@
+ASL-CLI
 =======
-ASL-EWF
-=======
-ASL-EWF provides a command line interface (CLI) for the AirSurf-Lettuce application created by the `Crops Phenomics Group
+ASL-CLI provides a command line interface (CLI) for the AirSurf-Lettuce application created by the `Crops Phenomics Group
 <https://github.com/Crop-Phenomics-Group/>`_. This CLI allows you to quickly feed inputs through the command line, rather than using a GUI. 
 
-Using ASL-EWF
+Using ASL-CLI
 -------------
 To use the CLI, download the repo and run the whole_pipe function found in the aslfire2.py file as follows:
 
@@ -28,3 +27,25 @@ To use the CLI, download the repo and run the whole_pipe function found in the a
 .. code::
    
    python3 aslwindow.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1'
+
+After running this file, the following files will be output into ..data/<filename>/:
+* boxes.npy
+* loop_vars.npy
+* probs.npy
+* size_labels.npy
+* sizes.png
+* counts.png
+* grey_conversion.png
+* harvest_regions.png
+
+The next step is to run **aslsizefile** as follows:
+
+.. code::
+   python3 aslsizefile.py create_quadrant_file '<output_directory> <name>
+   
+Below is an example:
+
+.. code::
+   
+   python3 aslfile.py create_quadrant_file '/home/emmanuel/Documents/ASL-EWF/data/medium_grey_conv/' 'grey_conversion'
+   
