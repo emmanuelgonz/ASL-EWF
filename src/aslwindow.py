@@ -1,11 +1,9 @@
 import fire
-import tkinter
-from tkinter import Menu, Tk, Canvas, Entry, Button, filedialog, Label, Frame, ttk, Checkbutton, BooleanVar, RIDGE, BOTH, YES, font
-from PIL import ImageTk, Image
 from skimage.io import imread, imsave, imshow, show
 from skimage.color import grey2rgb
 from skimage.transform import resize, rescale, pyramid_expand
 import keras
+from PIL import Image
 from keras.models import load_model
 from whole_field_test import evaluate_whole_field, draw_boxes
 import numpy as np
@@ -20,7 +18,6 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK'] ='True' # This prevents a crash from improperly loading a GPU library, but prevents using it I think. Comment out to see if it will work on your machine
 from zipfile import ZipFile
 import _thread
-from tkinter import messagebox
 from shutil import copy2
 import imageio
 
@@ -46,13 +43,15 @@ def draw_image(img, tab_name):
 
 def run_pipeline(filename, name):
     #extract long,lat,rot here.
-    lat = float(0.379331)
-    long = float(52.437348)
-    rot = float(31.5)
+    lat = float(0.0)
+    long = float(0.0)
+    rot = float(0.0)
     width = 1200
     height = 900
     img_width = 0
-    img_height =0
+    img_height = 0
+    #img_width = 0
+    #img_height =0
     #print(self.overflow.get())
 
     #name = os.path.splitext(os.path.basename(filename))[0]
@@ -69,15 +68,20 @@ def run_pipeline(filename, name):
     # If the box is not checked, this will run and copy the file to the new location
     
     if not os.path.exists(output_name):
-        if not os.path.exists("../data"):
-            os.mkdir("../data")
+        if not os.path.exists("../data/"):
+            os.mkdir("../data/")
 
         if not os.path.exists("../data/" + name):
             os.mkdir("../data/" + name)
 
         copy2(filename, output_name)
 
-    if not os.path.exists(output_name):
+    if not os.path.isfile(filename):
+        src_image = imread(filename).astype(np.uint8)
+        img_width = src_image[1]
+        img_height = src_image[0]
+        
+
         src_image = grey2rgb(filename)
         img1 = fix_noise_vetcorised(src_image)
         #print('CHECK: ' + src_image)
@@ -91,11 +95,11 @@ def run_pipeline(filename, name):
 
         imsave(output_name, img1)
     else:
-        #img1 = imread(filename).astype(np.uint8)[:,:,:3]
-        img1 = imageio.imread(filename, pilmode='i').astype(np.uint8)[:,:,:3]
+        img1 = imread(output_name).astype(np.uint8)[:,:,:3]
+        #img1 = imageio.imread(filename, pilmode='i').astype(np.uint8)[:,:,:3]
         #img1 = Image.open(filename) #.astype(np.uint8)[:,:,:3]
-    plt.imshow(img1, "normalizes")
-    plt.show()
+    #plt.imshow(img1, "normalizes")
+    #plt.show()
     #draw_image(img1, "normalised")
     time.sleep(2)
 
@@ -107,8 +111,8 @@ def run_pipeline(filename, name):
 
     im = draw_boxes(grey2rgb(img1.copy()), boxes, color=(255, 0, 0))
     imsave(output_dir + "counts.png", im)
-    plt.imshow(im, "counts")
-    plt.show
+    #plt.imshow(im, "counts")
+    #plt.show
     time.sleep(2)
 
     print("Calculating Sizes")
@@ -122,8 +126,8 @@ def run_pipeline(filename, name):
     color_field = create_for_contours(name, img1, boxes, labels, size_labels, RGB_tuples=RGB_tuples)
 
     imsave(output_dir + "sizes.png", color_field)
-    plt.imshow(color_field, "size distribution")
-    plt.show()
+    #plt.imshow(color_field, "size distribution")
+    #plt.show()
     time.sleep(2)
 
     # create quadrant harvest region image.
@@ -133,14 +137,15 @@ def run_pipeline(filename, name):
     im = np.array(im.getdata(), np.uint8).reshape(height, width,3)
 
     imsave(output_dir + "harvest_regions.png", im)
-    plt.imshow(im, "harvest regions")
-    plt.show()
+    #plt.imshow(im, "harvest regions")
+    #plt.show()
     time.sleep(2)
 
     #make the csv file.
+    
     create_quadrant_file(output_dir, name, img_height, img_width, boxes, label_ouput, lat, long, rotation=rot, region_size=230)
 
-    self.pipeline_thread = None
+    pipeline_thread = None
 
     print("Process Complete. Pipeline analysis has completed.")
     #messagebox.showinfo("Process Complete", message="Pipeline analysis has completed.")
