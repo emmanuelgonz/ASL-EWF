@@ -29,21 +29,21 @@ To use the CLI, download the repo and run the whole_pipe function found in the a
    python3 aslwindow.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1'
 
 After running this file, the following files will be output into ..data/<filename>/:
-* boxes.npy
-* loop_vars.npy
-* probs.npy
-* size_labels.npy
-* sizes.png
-* counts.png
-* grey_conversion.png
-* harvest_regions.png
+- boxes.npy
+- loop_vars.npy
+- probs.npy
+- size_labels.npy
+- sizes.png
+- counts.png
+- grey_conversion.png
+- harvest_regions.png
 
-The next step is to run **aslsizefile** as follows:
+* The next step is to run **aslsizefile** as follows:
 
 .. code::
    python3 aslsizefile.py create_quadrant_file '<output_directory> <name>
    
-Below is an example:
+* Below is an example:
 
 .. code::
    
