@@ -20,6 +20,7 @@ from zipfile import ZipFile
 import _thread
 from shutil import copy2
 import imageio
+import io
 
 def draw_image(img, tab_name):
     width = 1200
@@ -35,13 +36,14 @@ def draw_image(img, tab_name):
     #    self.photo_config[tab_name] = self.canvas[tab_name].create_image(0, 0, anchor=tkinter.NW, image=self.photo[tab_name])
     #else:
     #    self.canvas[tab_name].itemconfig(self.photo_config[tab_name], image=self.photo[tab_name])
-    canvas[tab_name].pack()
+    #canvas[tab_name].pack()
 
-    canvas[tab_name].itemconfig(self.photo_config[tab_name], image=self.photo[tab_name])
+    #canvas[tab_name].itemconfig(self.photo_config[tab_name], image=self.photo[tab_name])
     #select the tab we're drawing too.
     #self.tabControl.select(self.tab_names.index(tab_name))
 
 def run_pipeline(filename, name):
+    #overflow = (False)
     #extract long,lat,rot here.
     lat = float(0.0)
     long = float(0.0)
@@ -63,7 +65,7 @@ def run_pipeline(filename, name):
     Image.MAX_IMAGE_PIXELS = None
     #output_name = output_dir + name + ".png"
     output_name = output_dir + "grey_conversion.png"
-    #print("CHECK: " + output_name)
+    print(output_name)
 
     # If the box is not checked, this will run and copy the file to the new location
     
@@ -76,15 +78,24 @@ def run_pipeline(filename, name):
 
         copy2(filename, output_name)
 
-    if not os.path.isfile(filename):
+    if not os.path.exists(filename):
         src_image = imread(filename).astype(np.uint8)
         img_width = src_image[1]
         img_height = src_image[0]
-        
 
-        src_image = grey2rgb(filename)
+    if not os.path.exists(output_name):
+        src_image = imread(filename).astype(np.uint8)
+        img_width = src_image.shape[1]
+        img_height = src_image.shape[0]
+
+        if len(src_image.shape) == 2:
+            src_image = grey2rgb(src_image)
+        else:
+            src_image = src_image[:,:,:3]
+
+        #src_image = grey2rgb(filename)
         img1 = fix_noise_vetcorised(src_image)
-        #print('CHECK: ' + src_image)
+        print('CHECK: ' + src_image)
         
         # create dir.
         if not os.path.exists("../data"):
@@ -96,10 +107,17 @@ def run_pipeline(filename, name):
         imsave(output_name, img1)
     else:
         img1 = imread(output_name).astype(np.uint8)[:,:,:3]
-        #img1 = imageio.imread(filename, pilmode='i').astype(np.uint8)[:,:,:3]
-        #img1 = Image.open(filename) #.astype(np.uint8)[:,:,:3]
+        #img1 = imread(filename, pilmode='i').astype(np.uint8)#[:,:,:3]
+        #img1 = io.imread(filename,plugin='matplotlib')
+        #img1 = Image.open(filename).astype(np.uint8)[:,:,:3]
+
     #plt.imshow(img1, "normalizes")
     #plt.show()
+
+    
+    #plt.imshow(img1, "normalizes")
+    #plt.show()
+
     #draw_image(img1, "normalised")
     time.sleep(2)
 
@@ -143,9 +161,9 @@ def run_pipeline(filename, name):
 
     #make the csv file.
     
-    create_quadrant_file(output_dir, name, img_height, img_width, boxes, label_ouput, lat, long, rotation=rot, region_size=230)
+    create_quadrant_file(output_dir, name, img_height, img_width, boxes, label_ouput, lat, long, rot, region_size=230)
 
-    pipeline_thread = None
+    #pipeline_thread = None
 
     print("Process Complete. Pipeline analysis has completed.")
     #messagebox.showinfo("Process Complete", message="Pipeline analysis has completed.")
