@@ -13,6 +13,7 @@ To use the CLI, download the repo and run the whole_pipe function found in the a
    
    git clone https://github.com/emmanuelgonz/ASL-EWF.git
    cd ASL-EWF
+   chmod -R 755 * 
    cd src/
    ./depend.sh
 
