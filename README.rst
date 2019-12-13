@@ -52,6 +52,7 @@ The next step is to run **aslsizefile.py** for lettuce head counting and size ca
 * Lets count some lettuce!
 
 .. code::
+
    python3 aslsizefile.py create_quadrant_file '<output_directory> <name>
    
 * Below is an example:
