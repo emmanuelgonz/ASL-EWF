@@ -30,12 +30,19 @@ To use the CLI, download the repo and run the whole_pipe function found in the a
 
 After running this file, the following files will be output into ..data/<filename>/:
 - boxes.npy
+
 - loop_vars.npy
+
 - probs.npy
+
 - size_labels.npy
+
 - sizes.png
+
 - counts.png
+
 - grey_conversion.png
+
 - harvest_regions.png
 
 * The next step is to run **aslsizefile** as follows:
