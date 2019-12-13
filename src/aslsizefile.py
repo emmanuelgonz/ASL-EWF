@@ -7,7 +7,7 @@ import geopy
 import geopy.distance
 from collections import defaultdict
 from skimage.color import grey2rgb
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 
 def draw_image(self, img, tab_name):
         self.src_image = img
@@ -33,17 +33,25 @@ def calculate_new_lat_long(latitude, longitude, bearing, distance):
 
     return new_latitude, new_longitude
 
-def create_quadrant_file(output_dir, name, boxes, labels, latitude=52.437348, longitude=0.379331, rotation=31.5, region_size=230, pixels_in_meters=0.045):
-    src_image = imread(name).astype(np.uint8)
+def create_quadrant_file(output_dir, name, latitude=float(0.0), longitude=float(0.0), rotation=float(0.0), region_size=230, pixels_in_meters=0.045):
+    #lat = float(0.0)
+    #long = float(0.0)
+    #rot = float(0.0)
+    src_image = imread(output_dir + name + ".png")#.astype(np.uint8)#[:,:,:3]
     img_width = src_image.shape[1]
     img_height = src_image.shape[0]
+    
+    boxes = np.load(output_dir + "boxes.npy").astype("int")
+
+    labels = np.load(output_dir + "size_labels.npy") #0 is small, 1 is medium and 2 is large.
+    
     #ensure its a rgb image.
     print(src_image.shape)
     if len(src_image.shape) == 2:
         src_image = grey2rgb(src_image)
     else:
         src_image = src_image[:,:,:3]
-    draw_image(src_image, "original")
+    #draw_image(src_image, "original")
     
     h = img_height
     w = img_width
