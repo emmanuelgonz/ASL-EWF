@@ -3,8 +3,8 @@ ASL-CLI
 ASL-CLI provides a command line interface (CLI) for the AirSurf-Lettuce application created by the `Crops Phenomics Group
 <https://github.com/Crop-Phenomics-Group/>`_. This CLI allows you to quickly feed inputs through the command line, rather than using a GUI. 
 
-Using ASL-CLI
--------------
+Analyzing lettuce & generating images
+-------------------------------------
 To use the CLI, download the repo and run the whole_pipe function found in the aslfire2.py file as follows:
 
 * First install all dependencies by running:
@@ -45,7 +45,11 @@ After running this file, the following files will be output into ..data/<filenam
 
 - harvest_regions.png
 
-* The next step is to run **aslsizefile** as follows:
+Generating CSV file with counts/size categorization
+---------------------------------------------------
+The next step is to run **aslsizefile.py** for lettuce head counting and size categorization (small, medium, large).
+
+* Lets count some lettuce!
 
 .. code::
    python3 aslsizefile.py create_quadrant_file '<output_directory> <name>
