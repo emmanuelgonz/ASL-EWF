@@ -5,15 +5,23 @@ ASL-CLI provides a command line interface (CLI) for the AirSurf-Lettuce applicat
 
 Running AirSurf-Lettuce CLI pipeline
 ------------------------------------
-To use the CLI, download the repo and run the whole_pipe function found in the aslfire2.py file as follows:
-
-* First install all dependencies by running:
+* First install the GitHub repo:
 
 .. code-block:: RST
    
    git clone https://github.com/emmanuelgonz/ASL-EWF.git
+   
+* Then, go to the ASL-EWF direcoty and change permissions as follows:
+
+.. code-block:: RST 
+
    cd ASL-EWF
-   chmod -R 755 * 
+   chmod -R 755 *   
+   
+* Go the to src directory and run the depend.sh which contains all the necessary dependencies to run ASL-CLI:
+
+.. code-block:: RST
+
    cd src/
    ./depend.sh
 
@@ -21,7 +29,7 @@ To use the CLI, download the repo and run the whole_pipe function found in the a
 
 .. code-block:: RST
 
-   python3 aslwindow.py run_pipeline <image_file_directory> <image_filename> <model_directory>
+   python3 asl_cli.py run_pipeline <image_file_directory> <image_filename> <model_directory>
 
 * Here is an example to run a sample image. This is an example, make sure to change to your own directory.
 
