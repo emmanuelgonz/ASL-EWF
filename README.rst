@@ -10,7 +10,7 @@ Running AirSurf-Lettuce CLI pipeline
 .. code-block:: RST
    
    git clone https://github.com/emmanuelgonz/ASL-EWF.git
-   
+|
 * Then, go to the ASL-EWF direcoty and change permissions as follows:
 
 .. code-block:: RST 
