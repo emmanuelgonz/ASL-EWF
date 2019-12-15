@@ -17,29 +17,29 @@ Running AirSurf-Lettuce CLI pipeline
 
    cd ASL-EWF
    chmod -R 755 *   
-   
+|
 * Go the to src directory and run the depend.sh which contains all the necessary dependencies to run ASL-CLI:
 
 .. code-block:: RST
 
    cd src/
    ./depend.sh
-
+|
 * Now you're ready to count lettuce! All you have to do is run the following command line argument:
 
 .. code-block:: RST
 
    python3 asl_cli.py run_pipeline <image_file_directory> <image_filename> <model_directory>
-
+|
 * Here is an example to run a sample image. This is an example, make sure to change to your own directory.
 
 .. code-block:: RST
    
    python3 aslwindow.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1' '/home/emmanuelgonzalez/ASL-EWF/model/trained_model_new.h5'
-
+|
 .. note::   
    If using your own images, please make sure to add them to the 
-
+|
 After running this file, the following files will be output into ..data/<filename>/:
 - boxes.npy
 
