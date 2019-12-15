@@ -41,7 +41,7 @@ Running ASL-CLI pipeline
 .. note:: If using your own images, please make sure to add them to the 
 
 |
-After running ASL-CLI, the following files will be output into a sub folder (named after input filename) inside the data directory:
+After running ASL-CLI, the following files will be output into a sub folder inside the data directory:
 
 - boxes.npy
 
