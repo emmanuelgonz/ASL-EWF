@@ -39,7 +39,6 @@ Running ASL-CLI pipeline
 |
 .. note:: If using your own images, please make sure to add them to the 
 
-.. note:: This is a note.
 |
 After running this file, the following files will be output into ..data/<filename>/:
 - boxes.npy
