@@ -38,7 +38,8 @@ Running ASL-CLI pipeline
    python3 asl_cli.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1' '/home/emmanuelgonzalez/ASL-EWF/model/trained_model_new.h5'
 |
 
-.. note:: If using your own images, please make sure to add them to the 
+.. note:: Please note.
+   If using your own images, please make sure to add them to the 
 
 |
 After running this file, the following files will be output into ..data/<filename>/:
