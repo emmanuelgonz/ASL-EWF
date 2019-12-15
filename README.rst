@@ -9,7 +9,7 @@ To use the CLI, download the repo and run the whole_pipe function found in the a
 
 * First install all dependencies by running:
 
-.. code::
+.. code-block:: RST
    
    git clone https://github.com/emmanuelgonz/ASL-EWF.git
    cd ASL-EWF
@@ -19,13 +19,13 @@ To use the CLI, download the repo and run the whole_pipe function found in the a
 
 * Now you're ready to count lettuce! All you have to do is run the following command line argument:
 
-.. code::
+.. code-block:: RST
 
    python3 aslwindow.py run_pipeline <image_file_directory> <image_filename> <model_directory>
 
 * Here is an example to run a sample image. This is an example, make sure to change to your own directory.
 
-.. code::
+.. code-block:: RST
    
    python3 aslwindow.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1' '/home/emmanuelgonzalez/ASL-EWF/model/trained_model_new.h5'
 
