@@ -22,6 +22,9 @@ import _thread
 from shutil import copy2
 import imageio
 import io
+import tensorflow as tf
+
+tf.config.optimizer.set_jit(True)
 
 def draw_image(img, tab_name):
     width = 1200
