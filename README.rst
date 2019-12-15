@@ -41,7 +41,7 @@ Running ASL-CLI pipeline
 .. note:: If using your own images, please make sure to add them to the 
 
 |
-After running this file, the following files will be output into ..data/<filename>/:
+After running this file, the following files will be output into .. code::data/<filename>:
 - boxes.npy
 
 - loop_vars.npy
