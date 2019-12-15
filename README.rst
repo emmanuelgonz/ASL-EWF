@@ -35,7 +35,7 @@ Running ASL-CLI pipeline
 
 .. code-block:: RST
    
-   python3 aslwindow.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1' '/home/emmanuelgonzalez/ASL-EWF/model/trained_model_new.h5'
+   python3 asl_cli.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1' '/home/emmanuelgonzalez/ASL-EWF/model/trained_model_new.h5'
 |
 
 .. note:: If using your own images, please make sure to add them to the 
