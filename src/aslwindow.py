@@ -13,9 +13,10 @@ from size_calculator import calculate_sizes, create_for_contours
 import matplotlib.pyplot as plt
 from threading import Thread
 import time
-from construct_quadrant_file import create_quadrant_file
+#from construct_quadrant_file import create_quadrant_file
+from aslsizefile import create_quadrant_file
 import os
-os.environ['KMP_DUPLICATE_LIB_OK'] ='True' # This prevents a crash from improperly loading a GPU library, but prevents using it I think. Comment out to see if it will work on your machine
+#os.environ['KMP_DUPLICATE_LIB_OK'] ='True' # This prevents a crash from improperly loading a GPU library, but prevents using it I think. Comment out to see if it will work on your machine
 from zipfile import ZipFile
 import _thread
 from shutil import copy2
@@ -42,7 +43,7 @@ def draw_image(img, tab_name):
     #select the tab we're drawing too.
     #self.tabControl.select(self.tab_names.index(tab_name))
 
-def run_pipeline(filename, name):
+def run_pipeline(filename, name, model):
     #overflow = (False)
     #extract long,lat,rot here.
     lat = float(0.0)
@@ -119,11 +120,11 @@ def run_pipeline(filename, name):
     #plt.show()
 
     #draw_image(img1, "normalised")
-    time.sleep(2)
+    #time.sleep(2)
 
     print("Evaluating Field")
     keras.backend.clear_session()
-    loaded_model = load_model('../model/trained_model_new2.h5')
+    loaded_model = load_model(model)
     evaluate_whole_field(output_dir, img1, loaded_model)
     boxes = np.load(output_dir + "boxes.npy").astype("int")
 
@@ -146,7 +147,7 @@ def run_pipeline(filename, name):
     imsave(output_dir + "sizes.png", color_field)
     #plt.imshow(color_field, "size distribution")
     #plt.show()
-    time.sleep(2)
+    #time.sleep(2)
 
     # create quadrant harvest region image.
     output_field = create_quadrant_image(name, color_field)
@@ -157,12 +158,16 @@ def run_pipeline(filename, name):
     imsave(output_dir + "harvest_regions.png", im)
     #plt.imshow(im, "harvest regions")
     #plt.show()
-    time.sleep(2)
+    #time.sleep(2)
 
     #make the csv file.
+    #name = 'grey_conversion'
+    #create_quadrant_file(output_dir, name, img_height, img_width, boxes, label_ouput, lat, long, rot, region_size=230)
     
-    create_quadrant_file(output_dir, name, img_height, img_width, boxes, label_ouput, lat, long, rot, region_size=230)
+    output_dir = '../data/' + name + '/'
 
+    name2 = 'grey_conversion'
+    create_quadrant_file(output_dir, name2, name)
     #pipeline_thread = None
 
     print("Process Complete. Pipeline analysis has completed.")

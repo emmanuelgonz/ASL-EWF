@@ -33,10 +33,11 @@ def calculate_new_lat_long(latitude, longitude, bearing, distance):
 
     return new_latitude, new_longitude
 
-def create_quadrant_file(output_dir, name, latitude=float(0.0), longitude=float(0.0), rotation=float(0.0), region_size=230, pixels_in_meters=0.045):
+def create_quadrant_file(output_dir, name, original_filename, latitude=float(0.0), longitude=float(0.0), rotation=float(0.0), region_size=230, pixels_in_meters=0.045):
     #lat = float(0.0)
     #long = float(0.0)
     #rot = float(0.0)
+    #name = 'grey_conversion'
     src_image = imread(output_dir + name + ".png")#.astype(np.uint8)#[:,:,:3]
     img_width = src_image.shape[1]
     img_height = src_image.shape[0]
@@ -75,7 +76,7 @@ def create_quadrant_file(output_dir, name, latitude=float(0.0), longitude=float(
         regions[str(int(x / region_size)) + ":" + str(int(y / region_size))].append(label)
 
     #create csv file.
-    with open(output_dir + name + "_fielddata.csv", "w+") as csv_file:
+    with open(output_dir + original_filename + "_fielddata.csv", "w+") as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(["quadrant", "total_count", "small_count", "medium_count", "large_count", "size type","latitude", "longitude"])
         for nme, labs in regions.items():
