@@ -5,13 +5,13 @@ ASL-CLI provides a command line interface (CLI) for the AirSurf-Lettuce applicat
 
 Running ASL-CLI pipeline
 ------------------------------------
-* First install the GitHub repo:
+* First download the GitHub repo:
 
 .. code-block:: RST
    
    git clone https://github.com/emmanuelgonz/ASL-EWF.git
 |
-* Then, go to the ASL-EWF direcoty and change permissions as follows:
+* Then, go to the ASL-EWF directory and change permissions as follows:
 
 .. code-block:: RST 
 
