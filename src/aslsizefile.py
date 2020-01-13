@@ -33,14 +33,15 @@ def calculate_new_lat_long(latitude, longitude, bearing, distance):
 
     return new_latitude, new_longitude
 
-def create_quadrant_file(output_dir, name, original_filename, latitude=float(0.0), longitude=float(0.0), rotation=float(0.0), region_size=230, pixels_in_meters=0.045):
-    #lat = float(0.0)
-    #long = float(0.0)
-    #rot = float(0.0)
+def create_quadrant_file(output_dir, name, original_filename, rotation=0.0, region_size=230, pixels_in_meters=0.045):
+    latitude = 33.076476
+    longitude = -111.975076
+    lat, long = 33.076476, -111.975076
     #name = 'grey_conversion'
-    src_image = imread(output_dir + name + ".png")#.astype(np.uint8)#[:,:,:3]
-    img_width = src_image.shape[1]
-    img_height = src_image.shape[0]
+    src_image = imread(os.path.join(output_dir, name, ".png"))#.astype(np.uint8)#[:,:,:3]
+    h, w = src_image[:2]
+    #img_width = src_image.shape[1]
+    #img_height = src_image.shape[0]
     
     boxes = np.load(output_dir + "boxes.npy").astype("int")
 

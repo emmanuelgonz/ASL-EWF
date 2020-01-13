@@ -46,12 +46,12 @@ def draw_image(img, tab_name):
     #select the tab we're drawing too.
     #self.tabControl.select(self.tab_names.index(tab_name))
 
-def run_pipeline(filename, name, model):
+def run_pipeline(filename):
     #overflow = (False)
     #extract long,lat,rot here.
-    lat = float(0.0)
-    long = float(0.0)
-    rot = float(0.0)
+    #lat = float(0.0)
+    #long = float(0.0)
+    #rot = float(0.0)
     width = 1200
     height = 900
     img_width = 0
@@ -60,7 +60,7 @@ def run_pipeline(filename, name, model):
     #img_height =0
     #print(self.overflow.get())
 
-    #name = os.path.splitext(os.path.basename(filename))[0]
+    name = os.path.splitext(os.path.basename(filename))[0]
     print(name)
     #print(os.path.splitext(os.path.basename(filename)))
     #print("CHECK: " + filename)
@@ -73,34 +73,36 @@ def run_pipeline(filename, name, model):
 
     # If the box is not checked, this will run and copy the file to the new location
     
+    #if not os.path.exists(output_name):
+    #    if not os.path.exists("../data/"):
+    #        os.mkdir("../data/")
+
+    #    if not os.path.exists("../data/" + name):
+    #        os.mkdir("../data/" + name)
+
+    #    copy2(filename, output_name)
+
+    #if not os.path.exists(filename):
+    #    src_image = imread(filename).astype(np.uint8)
+    #    img_width = src_image[1]
+    #    img_height = src_image[0]
+
     if not os.path.exists(output_name):
-        if not os.path.exists("../data/"):
-            os.mkdir("../data/")
+        #src_image = imread(filename).astype(np.uint8)
+        #src_image = imread(output_name).astype(np.uint8)
+        src_image = grey2rgb(output_name)
+        print("Fixing noise")
+        img1 = fix_noise_vetcorised(src_image)
+        #img_width = src_image.shape[1]
+        #img_height = src_image.shape[0]
 
-        if not os.path.exists("../data/" + name):
-            os.mkdir("../data/" + name)
-
-        copy2(filename, output_name)
-
-    if not os.path.exists(filename):
-        src_image = imread(filename).astype(np.uint8)
-        img_width = src_image[1]
-        img_height = src_image[0]
-
-    if not os.path.exists(output_name):
-        src_image = imread(filename).astype(np.uint8)
-        img_width = src_image.shape[1]
-        img_height = src_image.shape[0]
-
-        if len(src_image.shape) == 2:
-            src_image = grey2rgb(src_image)
-        else:
-            src_image = src_image[:,:,:3]
+        #if len(src_image.shape) == 2:
+        #    src_image = grey2rgb(src_image)
+        #else:
+        #    src_image = src_image[:,:,:3]
 
         #src_image = grey2rgb(filename)
-        img1 = fix_noise_vetcorised(src_image)
-        print('CHECK: ' + src_image)
-        
+
         # create dir.
         if not os.path.exists("../data"):
             os.mkdir("../data")
@@ -111,34 +113,17 @@ def run_pipeline(filename, name, model):
         imsave(output_name, img1)
     else:
         img1 = imread(output_name).astype(np.uint8)[:,:,:3]
-        #img1 = imread(filename, pilmode='i').astype(np.uint8)#[:,:,:3]
-        #img1 = io.imread(filename,plugin='matplotlib')
-        #img1 = Image.open(filename).astype(np.uint8)[:,:,:3]
-
-    #plt.imshow(img1, "normalizes")
-    #plt.show()
-
-    
-    #plt.imshow(img1, "normalizes")
-    #plt.show()
-
-    #draw_image(img1, "normalised")
-    #time.sleep(2)
 
     print("Evaluating Field")
     keras.backend.clear_session()
-    loaded_model = load_model(model)
+    loaded_model = load_model('../model/trained_model_new.h5')
     evaluate_whole_field(output_dir, img1, loaded_model)
     boxes = np.load(output_dir + "boxes.npy").astype("int")
 
     im = draw_boxes(grey2rgb(img1.copy()), boxes, color=(255, 0, 0))
     imsave(output_dir + "counts.png", im)
-    #plt.imshow(im, "counts")
-    #plt.show
-    time.sleep(2)
 
     print("Calculating Sizes")
-
     labels, size_labels = calculate_sizes(boxes, img1)
     label_ouput= np.array([size_labels[label] for label in labels])
 
@@ -148,20 +133,16 @@ def run_pipeline(filename, name, model):
     color_field = create_for_contours(name, img1, boxes, labels, size_labels, RGB_tuples=RGB_tuples)
 
     imsave(output_dir + "sizes.png", color_field)
-    #plt.imshow(color_field, "size distribution")
-    #plt.show()
-    #time.sleep(2)
 
     # create quadrant harvest region image.
     output_field = create_quadrant_image(name, color_field)
     im = Image.fromarray(output_field.astype(np.uint8), mode="RGB")
+    width = 1497
+    height = 12278
     im = im.resize((width, height))
     im = np.array(im.getdata(), np.uint8).reshape(height, width,3)
 
     imsave(output_dir + "harvest_regions.png", im)
-    #plt.imshow(im, "harvest regions")
-    #plt.show()
-    #time.sleep(2)
 
     #make the csv file.
     #name = 'grey_conversion'
