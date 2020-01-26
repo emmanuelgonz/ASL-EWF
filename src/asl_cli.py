@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import fire
 from skimage.io import imread, imsave, imshow, show
 from skimage.color import grey2rgb
@@ -24,83 +25,36 @@ import imageio
 import io
 import tensorflow as tf
 
-tf.config.optimizer.set_jit(True)
+#tf.config.optimizer.set_jit(True)
 
-def draw_image(img, tab_name):
-    width = 1200
-    height = 900
-    src_image = img
-    photo[tab_name] = ImageTk.PhotoImage(Image.fromarray(img).resize((width, height)))
-    
-
-    #self.photo_config[tab_name] = None
-
-    # eitjer create an image on the canvas, or overwrite.
-    #if self.photo_config[tab_name] is None:
-    #    self.photo_config[tab_name] = self.canvas[tab_name].create_image(0, 0, anchor=tkinter.NW, image=self.photo[tab_name])
-    #else:
-    #    self.canvas[tab_name].itemconfig(self.photo_config[tab_name], image=self.photo[tab_name])
-    #canvas[tab_name].pack()
-
-    #canvas[tab_name].itemconfig(self.photo_config[tab_name], image=self.photo[tab_name])
-    #select the tab we're drawing too.
-    #self.tabControl.select(self.tab_names.index(tab_name))
-
-def run_pipeline(filename, name, model):
+def run_pipeline(filename):
     #overflow = (False)
     #extract long,lat,rot here.
-    lat = float(0.0)
-    long = float(0.0)
+    lat = float(33.07647635699768)
+    long = float(-111.97507607930646)
     rot = float(0.0)
-    width = 1200
-    height = 900
-    img_width = 0
-    img_height = 0
-    #img_width = 0
-    #img_height =0
-    #print(self.overflow.get())
 
-    #name = os.path.splitext(os.path.basename(filename))[0]
-    print(name)
-    #print(os.path.splitext(os.path.basename(filename)))
-    #print("CHECK: " + filename)
-    #output_dir = os.path.dirname(filename) + "/../data/" + name + "/"
-    output_dir = "../data/" + name + "/"
+    name = os.path.splitext(os.path.basename(filename))[0]
+    output_dir = os.path.join("../data/", name, "/")
     Image.MAX_IMAGE_PIXELS = None
-    #output_name = output_dir + name + ".png"
-    output_name = output_dir + "grey_conversion.png"
+    output_name = os.path.join(output_dir, "grey_conversion.png")
     print(output_name)
 
-    # If the box is not checked, this will run and copy the file to the new location
-    
-    if not os.path.exists(output_name):
-        if not os.path.exists("../data/"):
-            os.mkdir("../data/")
-
-        if not os.path.exists("../data/" + name):
-            os.mkdir("../data/" + name)
-
-        copy2(filename, output_name)
-
-    if not os.path.exists(filename):
-        src_image = imread(filename).astype(np.uint8)
-        img_width = src_image[1]
-        img_height = src_image[0]
-
-    if not os.path.exists(output_name):
+    # Load image 
+    if os.path.isfile(filename):
         src_image = imread(filename).astype(np.uint8)
         img_width = src_image.shape[1]
         img_height = src_image.shape[0]
-
+        print(src_image.shape)
         if len(src_image.shape) == 2:
             src_image = grey2rgb(src_image)
         else:
             src_image = src_image[:,:,:3]
 
-        #src_image = grey2rgb(filename)
-        img1 = fix_noise_vetcorised(src_image)
-        print('CHECK: ' + src_image)
-        
+    if not os.path.exists(output_name):
+        img1 = grey2rgb(src_image)
+        #img1 = fix_noise_vetcorised(src_image)
+
         # create dir.
         if not os.path.exists("../data"):
             os.mkdir("../data")
@@ -108,73 +62,45 @@ def run_pipeline(filename, name, model):
         if not os.path.exists("../data/" + name):
             os.mkdir("../data/" + name)
 
-        imsave(output_name, img1)
+            imsave(output_name, img1)
     else:
-        img1 = imread(output_name).astype(np.uint8)[:,:,:3]
-        #img1 = imread(filename, pilmode='i').astype(np.uint8)#[:,:,:3]
-        #img1 = io.imread(filename,plugin='matplotlib')
-        #img1 = Image.open(filename).astype(np.uint8)[:,:,:3]
+        img1 = imread(output_name).astype(np.uint8)[:,:,3]
 
-    #plt.imshow(img1, "normalizes")
-    #plt.show()
-
-    
-    #plt.imshow(img1, "normalizes")
-    #plt.show()
-
-    #draw_image(img1, "normalised")
-    #time.sleep(2)
-
+    #Evaluates field for lettuce
     print("Evaluating Field")
     keras.backend.clear_session()
+    model = "../model/trained_model_new.h5"
     loaded_model = load_model(model)
     evaluate_whole_field(output_dir, img1, loaded_model)
     boxes = np.load(output_dir + "boxes.npy").astype("int")
-
     im = draw_boxes(grey2rgb(img1.copy()), boxes, color=(255, 0, 0))
     imsave(output_dir + "counts.png", im)
-    #plt.imshow(im, "counts")
-    #plt.show
-    time.sleep(2)
 
+    #Calculates sizes of identified lettuces
     print("Calculating Sizes")
-
     labels, size_labels = calculate_sizes(boxes, img1)
     label_ouput= np.array([size_labels[label] for label in labels])
-
     np.save(output_dir + "size_labels.npy", label_ouput)
-
     RGB_tuples = [[0, 0, 255], [0, 255, 0], [255, 0, 0]]
     color_field = create_for_contours(name, img1, boxes, labels, size_labels, RGB_tuples=RGB_tuples)
-
     imsave(output_dir + "sizes.png", color_field)
-    #plt.imshow(color_field, "size distribution")
-    #plt.show()
-    #time.sleep(2)
 
     # create quadrant harvest region image.
     output_field = create_quadrant_image(name, color_field)
     im = Image.fromarray(output_field.astype(np.uint8), mode="RGB")
-    im = im.resize((width, height))
-    im = np.array(im.getdata(), np.uint8).reshape(height, width,3)
-
+    im = im.resize((img_width, img_height))
+    im = np.array(im.getdata(), np.uint8).reshape(img_height, img_width,3)
     imsave(output_dir + "harvest_regions.png", im)
-    #plt.imshow(im, "harvest regions")
-    #plt.show()
-    #time.sleep(2)
 
     #make the csv file.
     #name = 'grey_conversion'
     #create_quadrant_file(output_dir, name, img_height, img_width, boxes, label_ouput, lat, long, rot, region_size=230)
-    
     output_dir = '../data/' + name + '/'
-
-    name2 = 'grey_conversion'
+    name2 = os.path.splitext(os.path.basename(output_name))[0]
     create_quadrant_file(output_dir, name2, name)
     #pipeline_thread = None
 
     print("Process Complete. Pipeline analysis has completed.")
-    #messagebox.showinfo("Process Complete", message="Pipeline analysis has completed.")
 
 if __name__ == '__main__':
-    fire.Fire()
+    fire.Fire(run_pipeline)
