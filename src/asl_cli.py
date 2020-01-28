@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import fire
 from skimage.io import imread, imsave, imshow, show
 from skimage.color import grey2rgb
@@ -25,7 +26,7 @@ import imageio
 import io
 import tensorflow as tf
 
-#tf.config.optimizer.set_jit(True)
+tf.config.optimizer.set_jit(True)
 
 def run_pipeline(filename):
     #overflow = (False)
@@ -35,10 +36,12 @@ def run_pipeline(filename):
     rot = float(0.0)
 
     name = os.path.splitext(os.path.basename(filename))[0]
-    output_dir = os.path.join("../data/", name, "/")
+    print("Filename: " + name)
+    output_dir = "../data/" + name + "/"
+    print("Output directory: " + output_dir)
     Image.MAX_IMAGE_PIXELS = None
-    output_name = os.path.join(output_dir, "grey_conversion.png")
-    print(output_name)
+    output_name = output_dir + "grey_conversion.png"
+    print("Output file:" + output_name)
 
     # Load image 
     if os.path.isfile(filename):
@@ -62,7 +65,7 @@ def run_pipeline(filename):
         if not os.path.exists("../data/" + name):
             os.mkdir("../data/" + name)
 
-            imsave(output_name, img1)
+        imsave(output_name, img1)
     else:
         img1 = imread(output_name).astype(np.uint8)[:,:,3]
 
