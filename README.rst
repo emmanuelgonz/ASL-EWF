@@ -28,13 +28,13 @@ Running ASL-CLI pipeline
 
 .. code-block:: RST
 
-   ./asl_cli.py run_pipeline <image_file_directory> 
+   ./asl_cli.py <image_file_directory> 
 |
 * Here is an example to run a sample image. This is an example, make sure to change to your own directory.
 
 .. code-block:: RST
    
-   python3 asl_cli.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png'
+   python3 asl_cli.py '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png'
 |
 
 .. note:: If using your own images, please make sure to add them to the /data folder. 
