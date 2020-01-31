@@ -1,7 +1,6 @@
 ASL-CLI
 =======
-ASL-CLI provides a command line interface (CLI) for the AirSurf-Lettuce application created by the `Crops Phenomics Group
-<https://github.com/Crop-Phenomics-Group/>`_. This CLI allows you to quickly feed inputs through the command line, rather than using a GUI. 
+ASL-CLI provides a command line interface (CLI) for counting lettuce. 
 
 Running ASL-CLI pipeline
 ------------------------------------
@@ -29,16 +28,16 @@ Running ASL-CLI pipeline
 
 .. code-block:: RST
 
-   python3 asl_cli.py run_pipeline <image_file_directory> <image_filename> <model_directory>
+   ./asl_cli.py run_pipeline <image_file_directory> 
 |
 * Here is an example to run a sample image. This is an example, make sure to change to your own directory.
 
 .. code-block:: RST
    
-   python3 asl_cli.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png' 'sample_region1' '/home/emmanuelgonzalez/ASL-EWF/model/trained_model_new.h5'
+   python3 asl_cli.py run_pipeline '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png'
 |
 
-.. note:: If using your own images, please make sure to add them to the 
+.. note:: If using your own images, please make sure to add them to the /data folder. 
 
 |
 After running ASL-CLI, the following files will be output into a sub folder inside the data directory:
