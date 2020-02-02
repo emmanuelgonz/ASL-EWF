@@ -25,17 +25,22 @@ from shutil import copy2
 import imageio
 import io
 import tensorflow as tf
+import sys
+import timeit
+#from crop_raster import crop
+#from tgi_new import tgi
 
 tf.config.optimizer.set_jit(True)
+start = timeit.default_timer()
 
 def run_pipeline(filename):
-    #overflow = (False)
-    #extract long,lat,rot here.
-    lat = float(33.07647635699768)
-    long = float(-111.97507607930646)
+    #image = Image.open(filename)
+    #filename = image.resize((200,200), Image.ANTIALIAS)
+    lat = float(33.076486)
+    long = float(-111.975091)
     rot = float(0.0)
 
-    name = os.path.splitext(os.path.basename(filename))[0]
+    name = os.path.splitext(os.path.basename(filename))[0] + "_m1"
     print("Filename: " + name)
     output_dir = "../data/" + name + "/"
     print("Output directory: " + output_dir)
@@ -43,19 +48,19 @@ def run_pipeline(filename):
     output_name = output_dir + "grey_conversion.png"
     print("Output file:" + output_name)
 
-    # Load image 
+    # Load image  
     if os.path.isfile(filename):
         src_image = imread(filename).astype(np.uint8)
         img_width = src_image.shape[1]
         img_height = src_image.shape[0]
-        print(src_image.shape)
+        print(src_image.shape) 
         if len(src_image.shape) == 2:
             src_image = grey2rgb(src_image)
         else:
             src_image = src_image[:,:,:3]
-
+    
     if not os.path.exists(output_name):
-        img1 = grey2rgb(src_image)
+        img1 = src_image
         #img1 = fix_noise_vetcorised(src_image)
 
         # create dir.
@@ -64,7 +69,6 @@ def run_pipeline(filename):
 
         if not os.path.exists("../data/" + name):
             os.mkdir("../data/" + name)
-
         imsave(output_name, img1)
     else:
         img1 = imread(output_name).astype(np.uint8)[:,:,3]
@@ -102,8 +106,13 @@ def run_pipeline(filename):
     name2 = os.path.splitext(os.path.basename(output_name))[0]
     create_quadrant_file(output_dir, name2, name)
     #pipeline_thread = None
-
-    print("Process Complete. Pipeline analysis has completed.")
+    
+    stop = timeit.default_timer()
+    total_time = stop - start 
+    mins, secs = divmod(total_time, 60)
+    hours, mins = divmod(mins, 60)
+    sys.stdout.write("Processing complete. Total running time: %d:%d:%d.\n" % (hours, mins, secs))
+    #print("Process Complete. Pipeline analysis has completed.")
 
 if __name__ == '__main__':
     fire.Fire(run_pipeline)
