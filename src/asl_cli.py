@@ -25,8 +25,10 @@ from shutil import copy2
 import imageio
 import io
 import tensorflow as tf
+import time 
 
 tf.config.optimizer.set_jit(True)
+start = time.time()
 
 def run_pipeline(filename):
     #overflow = (False)
@@ -103,7 +105,7 @@ def run_pipeline(filename):
     create_quadrant_file(output_dir, name2, name)
     #pipeline_thread = None
 
-    print("Process Complete. Pipeline analysis has completed.")
+    print("Process Complete. It took", time.time()-start, "seconds.")
 
 if __name__ == '__main__':
     fire.Fire(run_pipeline)
