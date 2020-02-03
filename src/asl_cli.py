@@ -40,7 +40,7 @@ def run_pipeline(filename):
     long = float(-111.975091)
     rot = float(0.0)
 
-    name = os.path.splitext(os.path.basename(filename))[0] + "_m1"
+    name = os.path.splitext(os.path.basename(filename))[0] + "_model1"
     print("Filename: " + name)
     output_dir = "../data/" + name + "/"
     print("Output directory: " + output_dir)
@@ -49,6 +49,7 @@ def run_pipeline(filename):
     print("Output file:" + output_name)
 
     # Load image  
+    """
     if os.path.isfile(filename):
         src_image = imread(filename).astype(np.uint8)
         img_width = src_image.shape[1]
@@ -58,10 +59,18 @@ def run_pipeline(filename):
             src_image = grey2rgb(src_image)
         else:
             src_image = src_image[:,:,:3]
-    
+        """
+
     if not os.path.exists(output_name):
-        img1 = src_image
-        #img1 = fix_noise_vetcorised(src_image)
+        img1 = imread(filename)#.astype(np.uint32)[:,:,:1]
+        #img1 = grey2rgb(img1)
+        img_width = img1.shape[1]
+        img_height = img1.shape[0]
+        
+        #img1 = img.reshape(int(img.shape/3))
+        #img_width = img1.shape[1]
+        #img_height = img1.shape[0]
+        #img1 = fix_noise_vetcorised(img1)
 
         # create dir.
         if not os.path.exists("../data"):
@@ -71,8 +80,8 @@ def run_pipeline(filename):
             os.mkdir("../data/" + name)
         imsave(output_name, img1)
     else:
-        img1 = imread(output_name).astype(np.uint8)[:,:,3]
-
+        img1 = imread(output_name)#.astype(np.uint8)[:,:,3]
+    
     #Evaluates field for lettuce
     print("Evaluating Field")
     keras.backend.clear_session()
@@ -113,6 +122,6 @@ def run_pipeline(filename):
     hours, mins = divmod(mins, 60)
     sys.stdout.write("Processing complete. Total running time: %d:%d:%d.\n" % (hours, mins, secs))
     #print("Process Complete. Pipeline analysis has completed.")
-
+    
 if __name__ == '__main__':
     fire.Fire(run_pipeline)
