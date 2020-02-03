@@ -34,8 +34,6 @@ tf.config.optimizer.set_jit(True)
 start = timeit.default_timer()
 
 def run_pipeline(filename):
-    #image = Image.open(filename)
-    #filename = image.resize((200,200), Image.ANTIALIAS)
     lat = float(33.076486)
     long = float(-111.975091)
     rot = float(0.0)
@@ -45,11 +43,12 @@ def run_pipeline(filename):
     output_dir = "../data/" + name + "/"
     print("Output directory: " + output_dir)
     Image.MAX_IMAGE_PIXELS = None
-    output_name = output_dir + "grey_conversion.png"
+    output_name = output_dir + name + ".png"
     print("Output file:" + output_name)
-
-    # Load image  
+    
     """
+    # Load image  
+    
     if os.path.isfile(filename):
         src_image = imread(filename).astype(np.uint8)
         img_width = src_image.shape[1]
@@ -59,18 +58,12 @@ def run_pipeline(filename):
             src_image = grey2rgb(src_image)
         else:
             src_image = src_image[:,:,:3]
-        """
-
+    """
     if not os.path.exists(output_name):
-        img1 = imread(filename)#.astype(np.uint32)[:,:,:1]
-        #img1 = grey2rgb(img1)
+        img1 = imread(filename)
         img_width = img1.shape[1]
         img_height = img1.shape[0]
-        
-        #img1 = img.reshape(int(img.shape/3))
-        #img_width = img1.shape[1]
-        #img_height = img1.shape[0]
-        #img1 = fix_noise_vetcorised(img1)
+        #img1 = fix_noise_vetcorised(src_image)
 
         # create dir.
         if not os.path.exists("../data"):
@@ -116,6 +109,7 @@ def run_pipeline(filename):
     create_quadrant_file(output_dir, name2, name)
     #pipeline_thread = None
     
+    #Time the process
     stop = timeit.default_timer()
     total_time = stop - start 
     mins, secs = divmod(total_time, 60)
