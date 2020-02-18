@@ -37,7 +37,7 @@ Running ASL-CLI pipeline
    ./asl_cli.py '/home/emmanuel/Documents/ASL-EWF/test_images/sample_region1.png'
 |
 
-.. note:: If using your own images, please make sure to add them to the ```/test_images``` directory. 
+.. note:: If using your own images, please make sure to add them to the ``/test_images`` directory. 
 
 |
 After running ASL-CLI, the following files will be output into a sub folder inside the data directory:
